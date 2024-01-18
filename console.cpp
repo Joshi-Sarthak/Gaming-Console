@@ -1,15 +1,7 @@
 /*
 Gaming Console Program
-by-
-SYCOB98		Harsh Itkar
-SYCOB99		Onkar Jadhav
-SYCOB96		Spurti Hullur
-SYCOB112	Sarthak Joshi
 */
-#include <iostream>
 #include <bits/stdc++.h>
-#include <vector>
-#include <algorithm>
 #include <conio.h>
 #include <windows.h>
 #include <time.h>
