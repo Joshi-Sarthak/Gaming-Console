@@ -5,6 +5,7 @@ Gaming Console Program
 #include <conio.h>
 #include <windows.h>
 #include <time.h>
+#include "lib\Puzzle15.h"
 using namespace std;
 
 bool gameOver;
@@ -454,112 +455,6 @@ void Game2048 ::Display()
     }
 }
 
-class Board
-{
-protected:
-    vector<vector<int>> board;
-    int size;
-    virtual void initialize() = 0;
-    virtual void shuffle() = 0;
-    virtual void display() = 0;
-    virtual bool isSolved() = 0;
-    virtual bool move(char direction) = 0;
-
-public:
-    Board(int n)
-    {
-        size = n;
-        board.resize(size, vector<int>(size));
-    }
-};
-
-class Puzzle15 : public Board
-{
-public:
-    int emptyRow, emptyCol;
-    Puzzle15(int n) : Board(n) {}
-    void initialize()
-    {
-        int count = 1;
-        for (int i = 0; i < size; i++)
-        {
-            for (int j = 0; j < size; j++)
-            {
-                board[i][j] = count++;
-            }
-        }
-        emptyRow = size - 1;
-        emptyCol = size - 1;
-        board[emptyRow][emptyCol] = 0;
-    }
-    void shuffle()
-    {
-        vector<int> numbers;
-        for (int i = 0; i < size * size; i++)
-            numbers.push_back(i);
-        random_shuffle(numbers.begin(), numbers.end());
-        int index = 0;
-        for (int i = 0; i < size; i++)
-            for (int j = 0; j < size; j++)
-                board[i][j] = numbers[index++];
-        for (int i = 0; i < size; i++)
-            for (int j = 0; j < size; j++)
-                if (board[i][j] == 0)
-                {
-                    emptyRow = i;
-                    emptyCol = j;
-                    break;
-                }
-    }
-    void display()
-    {
-        for (int i = 0; i < size; i++)
-        {
-            for (int j = 0; j < size; j++)
-            {
-                if (board[i][j] != 0)
-                    cout << board[i][j];
-                cout << "\t";
-            }
-            cout << endl;
-        }
-    }
-    bool isSolved()
-    {
-        int count = 1;
-        for (int i = 0; i < size; i++)
-        {
-            for (int j = 0; j < size; j++)
-                if (board[i][j] != count % (size * size))
-                    return false;
-            count++;
-        }
-        return true;
-    }
-    bool move(char direction)
-    {
-        int n1, n2;
-        int newRow = emptyRow;
-        int newCol = emptyCol;
-        if (direction == 80 && emptyRow > 0)
-            newRow--;
-        else if (direction == 72 && emptyRow < size - 1)
-            newRow++;
-        else if (direction == 77 && emptyCol > 0)
-            newCol--;
-        else if (direction == 75 && emptyCol < size - 1)
-            newCol++;
-        else if (direction == 27)
-            return true;
-        else
-            return false;
-        swap(board[emptyRow][emptyCol], board[newRow][newCol]);
-        emptyRow = newRow;
-        emptyCol = newCol;
-        return false;
-    }
-};
-
 class matrixt
 {
 public:
@@ -793,6 +688,7 @@ void console::game3()
             cout << "<";
         cout << "\nInsane\t";
         if (ch % 5 == 0)
+
             cout << "<";
         d = _getch();
         Beep(3000, 50);
@@ -810,16 +706,16 @@ void console::game3()
     else
         ch = 5;
     Puzzle15 Board(ch + 1);
-    Board.initialize();
-    Board.shuffle();
-    while (!Board.isSolved())
+    Board.Puzzle15::initialize();
+    Board.Puzzle15::shuffle();
+    while (!Board.Puzzle15::isSolved())
     {
         system("cls");
         cout << "Press ESC to exit\n"
              << endl;
-        Board.display();
+        Board.Puzzle15::display();
         char move = _getch();
-        if (Board.move(move))
+        if (Board.Puzzle15::move(move))
             break;
     }
     cout << "Congratulations! You solved the Board." << endl;
